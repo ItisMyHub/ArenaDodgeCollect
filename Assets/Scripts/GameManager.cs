@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,12 +29,30 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[GameManager] Initialized. State = {CurrentState}");
     }
 
-    private void Start()
+   private void OnEnable()
     {
-    // Try to find a SceneLoader in the scene if none is set yet
-        if (SceneLoader == null)
+        // Make sure we always refresh the SceneLoader when scenes change
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Try to find a SceneLoader in the newly loaded scene
+        var loader = FindAnyObjectByType<SceneLoader>();
+        if (loader != null)
         {
-            SceneLoader = FindAnyObjectByType<SceneLoader>();
+            SceneLoader = loader;
+            Debug.Log($"[GameManager] SceneLoader set for scene: {scene.name}");
+        }
+        else
+        {
+            SceneLoader = null;
+            Debug.LogWarning($"[GameManager] No SceneLoader found in scene: {scene.name}");
         }
     }
 
