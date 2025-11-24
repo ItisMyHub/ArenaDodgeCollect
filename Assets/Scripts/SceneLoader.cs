@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Simple helper to load different scenes from UI buttons.
+/// </summary>
 public class SceneLoader : MonoBehaviour
 {
     public void LoadArena()
@@ -20,7 +23,7 @@ public class SceneLoader : MonoBehaviour
 
     public void QuitGame()
     {
-        // This will only quit a built game, not the editor
+        // Only quits the built game, has no effect in the editor
         Application.Quit();
     }
 }
