@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public SceneLoader SceneLoader {get; set;}
+    public float ElapsedTime { get; private set; }
+    private bool _isTiming;
 
     private void Awake()
     {
@@ -49,6 +51,11 @@ public class GameManager : MonoBehaviour
             SceneLoader = loader;
             Debug.Log($"[GameManager] SceneLoader set for scene: {scene.name}");
         }
+        if (scene.name == "Arena")
+        {
+            ElapsedTime = 0f;
+            SetState(GameState.Playing);
+        }
         else
         {
             SceneLoader = null;
@@ -60,6 +67,16 @@ public class GameManager : MonoBehaviour
     {
         CurrentState = newState;
         Debug.Log($"[GameManager] State changed to: {CurrentState}");
+
+        _isTiming = (CurrentState == GameState.Playing);
+    }
+
+    private void Update()
+    {
+        if (_isTiming)
+        {
+            ElapsedTime += Time.deltaTime;
+        }
     }
 
     
