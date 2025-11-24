@@ -10,7 +10,8 @@ public class ResultUI : MonoBehaviour
         if (GameManager.Instance != null)
         {
             float time = GameManager.Instance.ElapsedTime;
-            resultText.text = $"You lost!\nTime survived: {time:F1} seconds";
+            int score = GameManager.Instance.Score;
+            resultText.text = $"You lost!\nTime survived: {time:F1} seconds\nScore: {score}";
         }
         else
         {

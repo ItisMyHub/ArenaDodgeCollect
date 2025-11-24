@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public SceneLoader SceneLoader {get; set;}
     public float ElapsedTime { get; private set; }
+    public int Score { get; private set; }
     private bool _isTiming;
 
     private void Awake()
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         if (scene.name == "Arena")
         {
             ElapsedTime = 0f;
+            Score = 0;
             SetState(GameState.Playing);
         }
         else
@@ -92,5 +94,11 @@ public class GameManager : MonoBehaviour
     {
             Debug.LogWarning("[GameManager] GameOver called but SceneLoader is not set.");
     }
+    }
+
+    public void AddScore(int amount)
+    {
+        Score += amount;
+        Debug.Log($"[GameManager] Score increased to: {Score}");
     }
 }
