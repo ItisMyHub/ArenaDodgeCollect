@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     // Reference to the SceneLoader in the currently loaded scene
     public SceneLoader SceneLoader { get; set; }
+    public DebugManager DebugManager { get; private set; }
 
     private bool _isTiming;
 
@@ -65,6 +66,8 @@ public class GameManager : MonoBehaviour
     {
         // Try to find a SceneLoader in the newly loaded scene
         var loader = FindAnyObjectByType<SceneLoader>();
+        DebugManager = FindAnyObjectByType<DebugManager>();
+
         if (loader != null)
         {
             SceneLoader = loader;
@@ -110,7 +113,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
+        // If DebugManager exists and god mode is enabled, ignore game over
+        if (DebugManager != null && DebugManager.IsGodMode)
+        {
+            Debug.Log("[GameManager] GameOver ignored because GodMode is ON.");
+            return;
+        }
+
         SetState(GameState.GameOver);
+
+        // (JSON save code here, if you added it)
 
         if (SceneLoader != null)
         {
